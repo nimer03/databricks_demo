@@ -1,0 +1,21 @@
+agent_id,agent_name,employment_date,experience_level,employment_months,monthly_salary_eur
+AGENT_001,Max Müller,2023-10-28,Mid,28.5,3300
+AGENT_002,Anna Schmidt,2023-12-12,Mid,27.0,3650
+AGENT_003,Lukas Schneider,2024-01-26,Junior,25.5,2736
+AGENT_004,Sophie Fischer,2024-03-11,Lead,24.0,5450
+AGENT_005,Tim Weber,2024-04-25,Senior,22.5,4479
+AGENT_006,Laura Meyer,2024-06-09,Junior,21.0,3009
+AGENT_007,Felix Wagner,2024-07-24,Junior,19.5,2831
+AGENT_008,Emma Becker,2024-09-07,Senior,18.0,4791
+AGENT_009,Paul Schulz,2024-10-22,Junior,16.5,3086
+AGENT_010,Mia Hoffmann,2024-12-06,Senior,15.0,4487
+AGENT_011,Leon Koch,2025-01-20,Lead,13.5,5317
+AGENT_012,Hannah Bauer,2025-03-06,Senior,12.0,4524
+AGENT_013,Jonas Richter,2025-04-20,Mid,10.5,3404
+AGENT_014,Lena Klein,2025-06-04,Mid,9.0,3786
+AGENT_015,David Wolf,2025-07-19,Junior,7.5,2805
+AGENT_016,Sarah Schröder,2025-09-02,Mid,6.0,3485
+AGENT_017,Ben Neumann,2025-10-17,Mid,4.5,3364
+AGENT_018,Julia Schwarz,2025-12-01,Mid,3.0,3632
+AGENT_019,Noah Zimmermann,2026-01-15,Junior,1.5,2971
+AGENT_020,Lisa Braun,2026-03-01,Junior,0.0,2806
