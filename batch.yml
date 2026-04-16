@@ -5,19 +5,19 @@ resources:
       tasks:
         - task_key: bronze_tables
           notebook_task:
-            notebook_path: /Workspace/Users/nina.merkt@abat.de/customer_service_bronze
+            notebook_path: /notebooks/customer_service_bronze
             source: WORKSPACE
         - task_key: silver_tables
           depends_on:
             - task_key: bronze_tables
           notebook_task:
-            notebook_path: /Workspace/Users/nina.merkt@abat.de/customer_service_silver
+            notebook_path: /notebooks/customer_service_silver
             source: WORKSPACE
         - task_key: gold_tables
           depends_on:
             - task_key: silver_tables
           notebook_task:
-            notebook_path: /Workspace/Users/nina.merkt@abat.de/customer_service_gold
+            notebook_path: /notebooks/customer_service_gold
             source: WORKSPACE
       git_source:
         git_url: https://github.com/nimer03/databricks_demo
