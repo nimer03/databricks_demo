@@ -1,0 +1,21 @@
+agent_id,agent_name,employment_date,experience_level,monthly_salary_eur
+AGENT_001,Max Müller,2023-10-28,Junior,2766
+AGENT_002,Anna Schmidt,2023-12-12,Junior,3030
+AGENT_003,Lukas Schneider,2024-01-26,Mid,3682
+AGENT_004,Sophie Fischer,2024-03-11,Mid,3506
+AGENT_005,Tim Weber,2024-04-25,Mid,3581
+AGENT_006,Laura Meyer,2024-06-09,Junior,2947
+AGENT_007,Felix Wagner,2024-07-24,Mid,3690
+AGENT_008,Emma Becker,2024-09-07,Mid,3618
+AGENT_009,Paul Schulz,2024-10-22,Mid,3381
+AGENT_010,Mia Hoffmann,2024-12-06,Junior,3010
+AGENT_011,Leon Koch,2025-01-20,Senior,4367
+AGENT_012,Hannah Bauer,2025-03-06,Mid,3512
+AGENT_013,Jonas Richter,2025-04-20,Junior,3065
+AGENT_014,Lena Klein,2025-06-04,Mid,3679
+AGENT_015,David Wolf,2025-07-19,Mid,3682
+AGENT_016,Sarah Schröder,2025-09-02,Junior,3068
+AGENT_017,Ben Neumann,2025-10-17,Junior,2960
+AGENT_018,Julia Schwarz,2025-12-01,Junior,2855
+AGENT_019,Noah Zimmermann,2026-01-15,Junior,2924
+AGENT_020,Lisa Braun,2026-03-01,Junior,2812
