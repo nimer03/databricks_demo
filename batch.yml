@@ -7,6 +7,10 @@ resources:
           notebook_task:
             notebook_path: /notebooks/customer_service_bronze
             source: WORKSPACE
+        - task_key: analyse_data
+          notebook_task:
+            notebook_path: /notebooks/customer_service_analyse_data
+            source: WORKSPACE
         - task_key: silver_tables
           depends_on:
             - task_key: bronze_tables
