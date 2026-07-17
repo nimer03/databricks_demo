@@ -4,53 +4,30 @@ import numpy as np
 from datetime import datetime, timedelta
 import json
 import random
-from faker import Faker
 from google.oauth2 import service_account
 from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.google import GoogleProvider
 
-# Seed für Reproduzierbarkeit
 np.random.seed(42)
 random.seed(42)
 
-# Instanz für FakeXYZ
-fake = Faker('de_DE')
 
-
-# Customer Profile
+# Customer Profile (Platzhalter für Chats und Support-Anfragen)
 
 
 n_customers = 1000
 
-locations = []
-for _ in range(n_customers):
-    locations.append(fake.address())
-addresses = pd.DataFrame(locations)
-
 customer_profile = pd.DataFrame({
     'customer_id': [f'CUST_{i:05d}' for i in range(1, n_customers + 1)],
-    'signup_date': pd.date_range(end='2026-03-01', periods=n_customers, freq='2D'),
+    'signup_date': pd.date_range(end='2026-01-01', periods=n_customers, freq='2D'),
     'plan_tier': np.random.choice(['Basic_50Mbps', 'Standard_200Mbps', 'Premium_1Gbps'], 
-                                  n_customers, p=[0.4, 0.4, 0.2]),
-    'address': addresses.values.flatten(),
+                                  n_customers, p=[0.35, 0.45, 0.2]),
+    'address': "",
     'contract_type': np.random.choice(['monthly', 'annual', '2-year'], 
                                      n_customers, p=[0.5, 0.3, 0.2]),
     'autopay_enabled': np.random.choice([True, False], n_customers, p=[0.7, 0.3])
 })
-
-customer_profile['account_age_months'] = (
-    (pd.Timestamp('2026-03-01') - customer_profile['signup_date']).dt.days / 30
-).round(1)
-
-plan_prices = {'Basic_50Mbps': 49.99, 'Standard_200Mbps': 79.99, 'Premium_1Gbps': 119.99}
-customer_profile['monthly_bill'] = customer_profile['plan_tier'].map(plan_prices)
-customer_profile['monthly_bill'] = customer_profile['monthly_bill'] * np.random.uniform(0.9, 1, n_customers)
-customer_profile['monthly_bill'] = customer_profile['monthly_bill'].round(2)
-
-speed_tiers = {'Basic_50Mbps': 50, 'Standard_200Mbps': 200, 'Premium_1Gbps': 1000}
-customer_profile['speed_tier_mbps'] = customer_profile['plan_tier'].map(speed_tiers)
-customer_profile['data_usage_gb_last_month'] = np.random.exponential(300, n_customers).round(1)
 
 print("Customer Profile created")
 
@@ -73,9 +50,9 @@ churn_labels.loc[churn_labels['churned'] == 1, 'churn_date'] = [
     for _ in range(n_churned)
 ]
 
-churn_reasons = ['competitor_price', 'poor_service', 'technical_issues', 'relocation', 'price_increase']
+churn_reasons = ['competitor_price', 'poor_service', 'technical_issues', 'relocation', 'price_increase', 'unknown']
 churn_labels.loc[churn_labels['churned'] == 1, 'churn_reason'] = np.random.choice(
-    churn_reasons, n_churned, p=[0.35, 0.25, 0.20, 0.15, 0.05]
+    churn_reasons, n_churned, p=[0.35, 0.20, 0.20, 0.10, 0.05, 0.1]
 )
 
 print("Churn Labels erstellt")
@@ -127,45 +104,49 @@ for customer_id in customer_profile['customer_id']:
             
             # Simuliere verschiedene Problemtypen
             if problem_type == 'slow_speed':
-                speed_factor = random.uniform(0.2, 0.5)  # Nur 20-50% des Speeds
-                latency = random.uniform(40, 100)
+                speed_factor = random.uniform(0.3, 0.7)
+                latency = random.uniform(50, 150)
+                packet_loss = random.uniform(1, 2)
                 
             elif problem_type == 'connection_drops':
-                drops = random.randint(5, 25)
-                packet_loss = random.uniform(5, 20)
+                drops = random.randint(3, 15)
+                packet_loss = random.uniform(2, 8)
+                latency = random.uniform(80, 200)
+                speed_factor = random.uniform(0.6, 0.9)
                 
             elif problem_type == 'high_latency':
-                latency = random.uniform(100, 300)
-                packet_loss = random.uniform(3, 10)
+                latency = random.uniform(150, 500)
+                speed_factor = random.uniform(0.7, 0.95)
                 
             elif problem_type == 'outage':
-                downtime = random.randint(30, 180)
+                downtime = random.randint(60, 300)
                 speed_factor = 0
-                drops = random.randint(10, 50)
+                drops = random.randint(50, 200)
+                packet_loss = 100
+                latency = 0
                 
             elif problem_type == 'packet_loss':
-                packet_loss = random.uniform(10, 30)
-                latency = random.uniform(60, 150)
+                packet_loss = random.uniform(5, 25)
+                latency = random.uniform(50, 120)
+                speed_factor = random.uniform(0.5, 0.8)
+                drops = random.randint(1, 5)
             
             # Speichere dieses Problem-Event
             customer_technical_issues[customer_id].append({
                 'timestamp': timestamp,
-                'problem_type': problem_type,
-                'log_id': f'LOG_{log_id:07d}',
-                'severity': 'high' if downtime > 60 or speed_factor < 0.3 else 'medium'
+                'problem_type': problem_type
             })
             
 
         connection_logs.append({
-            'log_id': f'LOG_{log_id:07d}',
-            'customer_id': customer_id,
             'timestamp': timestamp,
+            'issue_detected': 'error: ' + problem_type if problem_type else 'none'
+            'customer_id': customer_id,
             'speed_measured_mbps': round(customer_data['speed_tier_mbps'] * speed_factor, 1),
             'packet_loss_percent': round(packet_loss, 2),
             'latency_ms': round(latency, 1),
             'downtime_minutes': downtime,
-            'connection_drops_count': drops,
-            'issue_detected': problem_type if problem_type else 'none'
+            'connection_drops_count': drops
         })
         
         log_id += 1
@@ -528,8 +509,7 @@ for customer_idx, customer_id in enumerate(customers_with_chats):
         topic_cursor["technical"] += 1
 
         base_messages[0]["message"] = (
-            f"{base_messages[0]['message']} (Gemessene Geschwindigkeit: "
-            f"{int(log_data['speed_measured_mbps'])} Mbps, Issue: {issue['problem_type']})."
+            f"{base_messages[0]['message']}"
         )
 
         messages = add_timestamps(base_messages, timestamp_start)
